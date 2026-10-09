@@ -35,7 +35,7 @@ groups.forEach(g=>{const b=document.createElement('button');b.className='hero';b
 for(const mode of ['dealer','support'])$g(mode+'Tab').onclick=()=>{for(const v of ['dealer','support']){$g(v+'Panel').hidden=v!==mode;$g(v+'Tab').setAttribute('aria-pressed',v===mode)}};render();})();
 </script>
 <style>
-.page-tabs{flex-wrap:wrap}.mono-table td:first-child{text-align:left}.mono-table th{position:static!important}.mono-chart .fill{background:linear-gradient(90deg,#9469c5,#dfbbff)}#monopolyPanel .identity{margin-top:0}#monopolyPanel .gain{font-size:22px}#monoSteps{font-variant-numeric:tabular-nums}#monoSteps td:nth-child(3){color:var(--green)}.mono-summary{color:#dfbbff}.mono-level{font-weight:700}.mono-caption{font-size:12px;color:var(--muted)}
+.page-tabs{flex-wrap:wrap}.mono-table td:first-child{text-align:left}.mono-table th{position:static!important}.mono-chart .fill{background:linear-gradient(90deg,#9469c5,#dfbbff)}#monoGrowth .identity{margin-top:0}#monoGrowth .gain{font-size:22px}#monoSteps{font-variant-numeric:tabular-nums}#monoSteps td:nth-child(3){color:var(--green)}.mono-summary{color:#dfbbff}.mono-level{font-weight:700}.mono-caption{font-size:12px;color:var(--muted)}
 </style>
 <main id="monopolyPanel" hidden><aside><h2>재화 생산 효율</h2><button class="hero" aria-pressed="true" id="monoHero"><img id="monoCardImage" alt="">악마 모노폴리<span class="grole">악마석 기대 획득량</span></button></aside><article>
 <div class="eyebrow">MONOPOLY · DEMON STONES</div><h1>돌파하면 악마석이 얼마나 늘어날까?</h1><p class="muted">태초 30라운드 소환 → 80라운드 도착까지의 기대 획득량입니다. 상점 구매와 딜러 DPM 상승률은 집계하지 않습니다.</p>
@@ -76,6 +76,23 @@ q('monoBreakNote').textContent='19레벨은 소환 악마석 +5개, 22레벨은 
  cards.addEventListener('click',e=>{if(!e.target.closest('#indiSupportCard'))reset();},true);
  card.onclick=()=>{document.getElementById('dealerPanel').hidden=true;document.getElementById('monopolyPanel').hidden=true;panel.hidden=false;original.hidden=true;article.hidden=false;for(const b of cards.querySelectorAll('button'))b.setAttribute('aria-pressed',String(b===card));document.getElementById('dealerTab').setAttribute('aria-pressed','false');document.getElementById('supportTab').setAttribute('aria-pressed','true');};
  document.getElementById('supportTab').addEventListener('click',reset);
+})();
+</script>
+<script>
+// Keep resource production details inside the shared supporter layout.
+(()=>{
+ const panel=document.getElementById('supportPanel'),cards=document.getElementById('gHeroes');
+ const original=panel.querySelector('article'),mono=document.querySelector('#monopolyPanel article'),card=document.getElementById('monoSupportCard');
+ mono.id='monoGrowth';mono.hidden=true;panel.append(mono);
+ function reset(){if(!mono.hidden){mono.hidden=true;original.hidden=false;}card.setAttribute('aria-pressed','false');}
+ cards.addEventListener('click',e=>{if(!e.target.closest('#monoSupportCard'))reset();},true);
+ document.getElementById('supportTab').addEventListener('click',reset);
+ card.onclick=()=>{
+  document.getElementById('dealerPanel').hidden=true;document.getElementById('monopolyPanel').hidden=true;
+  panel.hidden=false;original.hidden=true;document.getElementById('indiGrowth').hidden=true;mono.hidden=false;
+  for(const b of cards.querySelectorAll('button'))b.setAttribute('aria-pressed',String(b===card));
+  document.getElementById('dealerTab').setAttribute('aria-pressed','false');document.getElementById('supportTab').setAttribute('aria-pressed','true');
+ };
 })();
 </script>
 </body></html>
